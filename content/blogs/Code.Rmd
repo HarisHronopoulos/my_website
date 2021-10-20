@@ -13,8 +13,6 @@ title: Pay discrimination
 ---
 
 
-```
-
 
 ```{r, setup, echo=FALSE}
 knitr::opts_chunk$set(
@@ -50,9 +48,9 @@ library(rstatix)
 library(ggpubr)
 # Omega Group plc- Pay Discrimination
 
-> At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women. This seemed like a considerable difference, so it was decided that a further analysis of the company salaries was warranted.
+#At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women. This seemed like a considerable difference, so it was decided that a further analysis of the company salaries was warranted.
 
-> You are asked to carry out the analysis. The objective is to find out whether there is indeed a significant difference between the salaries of men and women, and whether the difference is due to discrimination or whether it is based on another, possibly valid, determining factor.
+#You are asked to carry out the analysis. The objective is to find out whether there is indeed a significant difference between the salaries of men and women, and whether the difference is due to discrimination or whether it is based on another, possibly valid, determining factor.
 
 ## Loading the data
 
@@ -178,7 +176,7 @@ You can use `GGally:ggpairs()` to create a scatterplot and correlation matrix. E
 omega %>% 
   select(gender, experience, salary) %>% #order variables they will appear in ggpairs()
   ggpairs(aes(colour=gender, alpha = 0.3))+
-  theme_bw()
+  theme_bw(4)
 ```
 
 > Look at the salary vs experience scatterplot. What can you infer from this plot? Explain in a couple of sentences

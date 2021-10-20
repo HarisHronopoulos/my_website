@@ -3,111 +3,161 @@ categories:
 - ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
 - ""
 date: "2021-09-30"
-description: Risk-Return of DJIA stocks # the title that will show up once someone gets to this page
+description: Pay discrimination # the title that will show up once someone gets to this page
 draft: false
-image: spices.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+image: pic10 # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
 
 keywords: ""
-slug: code
-title: Risk-Return of DJIA stocks
+slug: code1
+title: Pay discrimination
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<div id="returns-of-financial-stocks" class="section level1">
-<h1>Returns of financial stocks</h1>
-<p>Next, let’s choose the <a href="https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average">Dow Jones Industrial Average (DJIA)</a> stocks and their ticker symbols and download some data. Besides the thirty stocks that make up the DJIA, we will also add <code>SPY</code> which is an SP500 ETF (Exchange Traded Fund).</p>
-<p>We will use the <code>rvest</code> package to scrape the Wikipedia page for the constituents of DJIA</p>
-<pre class="r"><code>djia_url &lt;- &quot;https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average&quot;
+<pre class="r"><code>omega &lt;- read_csv(here::here(&quot;data&quot;, &quot;omega.csv&quot;))
+glimpse(omega) # examine the data frame</code></pre>
+<pre><code>## Rows: 50
+## Columns: 3
+## $ salary     &lt;dbl&gt; 81894, 69517, 68589, 74881, 65598, 76840, 78800, 70033, 635~
+## $ gender     &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;ma~
+## $ experience &lt;dbl&gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24, 3~</code></pre>
+<div id="relationship-salary---gender" class="section level2">
+<h2>Relationship Salary - Gender ?</h2>
+<p>The data frame <code>omega</code> contains the salaries for the sample of 50 executives in the company. Can you conclude that there is a significant difference between the salaries of the male and female executives?</p>
+<p>Note that you can perform different types of analyses, and check whether they all lead to the same conclusion</p>
+<p>. Confidence intervals . Hypothesis testing . Correlation analysis . Regression</p>
+<p>Calculate summary statistics on salary by gender. Also, create and print a dataframe where, for each gender, you show the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+mosaic::favstats (salary ~ gender, data=omega)</code></pre>
+<pre><code>##   gender   min    Q1 median    Q3   max  mean   sd  n missing
+## 1 female 47033 60338  64618 70033 78800 64543 7567 26       0
+## 2   male 54768 68331  74675 78568 84576 73239 7463 24       0</code></pre>
+<pre class="r"><code># Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
 
+omega_v1 &lt;- omega %&gt;% 
+  group_by(gender) %&gt;% 
+  summarize(mean_salary = mean(salary),
+            sd = sd(salary), 
+            count = n(),
+            t_critical = qt(0.975, count - 1 ),
+            se_salary = sd(salary)/sqrt(count),
+            lower = mean_salary - t_critical * se_salary,
+            upper = mean_salary + t_critical * se_salary,
+            margin_of_error = t_critical * se_salary)
 
-#get tables that exist on URL
-tables &lt;- djia_url %&gt;% 
-  read_html() %&gt;% 
-  html_nodes(css=&quot;table&quot;)
+omega_v1</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   gender mean_salary    sd count t_critical se_salary  lower  upper
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 female      64543. 7567.    26       2.06     1484. 61486. 67599.
+## 2 male        73239. 7463.    24       2.07     1523. 70088. 76390.
+## # ... with 1 more variable: margin_of_error &lt;dbl&gt;</code></pre>
+<pre class="r"><code># the t-critical value, the standard error, the margin of error, 
 
+# and the low/high endpoints of a 95% condifence interval</code></pre>
+<blockquote>
+<p>What can you conclude from your analysis? A couple of sentences would be enough</p>
+<p>Even though the sample of people taken into consideration is similar (26 females and 24 males), its clear that there is a significant difference in the respective salaries of the two groups.</p>
+</blockquote>
+<p>Below we run a hypothesis testing, assuming as a null hypothesis that the mean difference in salaries is zero, or that, on average, men and women make the same amount of money.</p>
+<pre class="r"><code># hypothesis testing using t.test() 
+t.test(salary ~ gender, data = omega)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  salary by gender
+## t = -4, df = 48, p-value = 2e-04
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  -12973  -4420
+## sample estimates:
+## mean in group female   mean in group male 
+##                64543                73239</code></pre>
+<pre class="r"><code> # hypothesis testing using infer package
+gender_salaries &lt;- omega %&gt;% 
+  specify(salary ~ gender) %&gt;%
+  hypothesize(null = &quot;independence&quot;) %&gt;%
+  generate(reps = 1000, type =&quot;permute&quot;)%&gt;%
+  calculate(stat = &quot;diff in means&quot;)
+  
+gender_salaries %&gt;% visualize()</code></pre>
+<p><img src="/blogs/Code_files/figure-html/hypothesis_testing-1.png" width="648" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>What can you conclude from your analysis? A couple of sentences would be enough</p>
+<ul>
+<li>Looking at the Null distribution we understand that the difference in sample mean which is around 9000 is not even showing in the chart since its actually located far on the right of distribution. Thus we reject the Null hypothesis and conclude that there is not enough evidence to show us that mean salary between male and female are equal.</li>
+</ul>
+</blockquote>
+</div>
+<div id="relationship-experience---gender" class="section level2">
+<h2>Relationship Experience - Gender?</h2>
+<p>At the board meeting, someone raised the issue that there was indeed a substantial difference between male and female salaries, but that this was attributable to other reasons such as differences in experience. A questionnaire send out to the 50 executives in the sample reveals that the average experience of the men is approximately 21 years, whereas the women only have about 7 years experience on average (see table below).</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+favstats (experience ~ gender, data=omega)</code></pre>
+<pre><code>##   gender min    Q1 median   Q3 max  mean    sd  n missing
+## 1 female   0  0.25    3.0 14.0  29  7.38  8.51 26       0
+## 2   male   1 15.75   19.5 31.2  44 21.12 10.92 24       0</code></pre>
+<pre class="r"><code>omega_v2 &lt;- omega %&gt;% 
+  group_by(gender) %&gt;% 
+  summarize(mean_experience = mean(experience),
+            sd = sd(experience), 
+            count = n(),
+            t_critical = qt(0.975, count - 1 ),
+            se_experience = sd(experience)/sqrt(count),
+            lower = mean_experience - t_critical * se_experience,
+            upper = mean_experience + t_critical * se_experience,
+            margin_of_error = t_critical * se_experience)
 
-# parse HTML tables into a dataframe called djia. 
-# Use purr::map() to create a list of all tables in URL
-djia &lt;- map(tables, . %&gt;% 
-               html_table(fill=TRUE)%&gt;% 
-               clean_names())
-
-
-# constituents
-table1 &lt;- djia[[2]] %&gt;% # the second table on the page contains the ticker symbols
-  mutate(date_added = ymd(date_added),
-         
-         # if a stock is listed on NYSE, its symbol is, e.g., NYSE: MMM
-         # We will get prices from yahoo finance which requires just the ticker
-         
-         # if symbol contains &quot;NYSE*&quot;, the * being a wildcard
-         # then we jsut drop the first 6 characters in that string
-         ticker = ifelse(str_detect(symbol, &quot;NYSE*&quot;),
-                          str_sub(symbol,7,11),
-                          symbol)
-         )
-
-# we need a vector of strings with just the 30 tickers + SPY  + VIX
-tickers &lt;- table1 %&gt;% 
-  select(ticker) %&gt;% 
-  pull() %&gt;% # pull() gets them as a sting of characters
-  c(&quot;SPY&quot;, &quot;^VIX&quot;) # and lets us add SPY, the SP500 ETF, and the VIX index</code></pre>
-<pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
-
-myStocks &lt;- tickers %&gt;% 
-  tq_get(get  = &quot;stock.prices&quot;,
-         from = &quot;2000-01-01&quot;) %&gt;%
-  group_by(symbol) 
-
-glimpse(myStocks) # examine the structure of the resulting data frame</code></pre>
-<pre><code>## Rows: 167,503
-## Columns: 8
-## Groups: symbol [32]
-## $ symbol   &lt;chr&gt; &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;~
-## $ date     &lt;date&gt; 2000-01-03, 2000-01-04, 2000-01-05, 2000-01-06, 2000-01-07, ~
-## $ open     &lt;dbl&gt; 48.0, 46.4, 45.6, 47.2, 50.6, 50.2, 50.4, 51.0, 50.7, 50.4, 4~
-## $ high     &lt;dbl&gt; 48.2, 47.4, 48.1, 51.2, 51.9, 51.8, 51.2, 51.8, 50.9, 50.5, 4~
-## $ low      &lt;dbl&gt; 47.0, 45.3, 45.6, 47.2, 50.0, 50.0, 50.2, 50.4, 50.2, 49.5, 4~
-## $ close    &lt;dbl&gt; 47.2, 45.3, 46.6, 50.4, 51.4, 51.1, 50.2, 50.4, 50.4, 49.7, 4~
-## $ volume   &lt;dbl&gt; 2173400, 2713800, 3699400, 5975800, 4101200, 3863800, 2357600~
-## $ adjusted &lt;dbl&gt; 27.2, 26.1, 26.9, 29.0, 29.6, 29.4, 28.9, 29.0, 29.0, 28.6, 2~</code></pre>
-<p>Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.</p>
-<pre class="r"><code>#calculate daily returns
-myStocks_returns_daily &lt;- myStocks %&gt;%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = periodReturn, 
-               period     = &quot;daily&quot;, 
-               type       = &quot;log&quot;,
-               col_rename = &quot;daily_returns&quot;,
-               cols = c(nested.col))  
-
-#calculate monthly  returns
-myStocks_returns_monthly &lt;- myStocks %&gt;%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = periodReturn, 
-               period     = &quot;monthly&quot;, 
-               type       = &quot;arithmetic&quot;,
-               col_rename = &quot;monthly_returns&quot;,
-               cols = c(nested.col)) </code></pre>
-<pre class="r"><code>#visualise monthly returns since 2010, for each of the 30 DJIA stocks
-myStocks_returns_monthly %&gt;% 
-  filter(symbol != &quot;^VIX&quot;, symbol != &quot;SPY&quot;) %&gt;% 
-  filter(date &gt;= &quot;2010-01-01&quot;) %&gt;% 
-  ggplot(aes(x = monthly_returns)) +
-  geom_density(aes(colour = symbol), alpha = 1) +
-  geom_histogram(aes(fill = symbol), alpha = 0.4, binwidth = 0.005)+
-  facet_wrap(~symbol, nrow=7)+
-  theme_bw(8)+
-  theme(legend.position = &quot;none&quot;) +
-  scale_x_continuous(labels = scales::percent) +
-  labs(
-    title = &quot;Distribution of monthly returns for DJIA stocks&quot;,
-    subtitle = &quot;Jan 2010 - now&quot;,
-    x = &quot;Monthly returns (%)&quot;,
-    y = &quot;&quot; )+
+omega_v2</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   gender mean_experience    sd count t_critical se_experience lower upper
+##   &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 female            7.38  8.51    26       2.06          1.67  3.95  10.8
+## 2 male             21.1  10.9     24       2.07          2.23 16.5   25.7
+## # ... with 1 more variable: margin_of_error &lt;dbl&gt;</code></pre>
+<pre class="r"><code>t.test(experience ~ gender, data = omega)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  experience by gender
+## t = -5, df = 43, p-value = 1e-05
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  -19.35  -8.13
+## sample estimates:
+## mean in group female   mean in group male 
+##                 7.38                21.12</code></pre>
+<p>Based on this evidence, can you conclude that there is a significant difference between the experience of the male and female executives? Perform similar analyses as in the previous section. Does your conclusion validate or endanger your conclusion about the difference in male and female salaries?</p>
+<blockquote>
+<p>t critical value is larger than the p value, thus we conclude that there is a significant difference between the experience of the male and female executives which validates our conclusion about difference in male and female salaries.</p>
+</blockquote>
+</div>
+<div id="relationship-salary---experience" class="section level2">
+<h2>Relationship Salary - Experience ?</h2>
+<p>Someone at the meeting argues that clearly, a more thorough analysis of the relationship between salary and experience is required before any conclusion can be drawn about whether there is any gender-based salary discrimination in the company.</p>
+<p>Analyse the relationship between salary and experience. Draw a scatterplot to visually inspect the data</p>
+<pre class="r"><code>ggplot(data = omega, mapping =aes(experience, salary)) +
+  geom_point() +
+  geom_smooth(se = TRUE) +
+  facet_wrap(~gender) +
   NULL</code></pre>
-<p><img src="/blogs/Code_files/figure-html/unnamed-chunk-1-1.png" width="648" style="display: block; margin: auto;" /></p>
-<p><img src="/blogs/Code_files/figure-html/risk_return-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/Code_files/figure-html/salary_exp_scatter-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="check-correlations-between-the-data" class="section level2">
+<h2>Check correlations between the data</h2>
+<p>You can use <code>GGally:ggpairs()</code> to create a scatterplot and correlation matrix. Essentially, we change the order our variables will appear in and have the dependent variable (Y), salary, as last in our list. We then pipe the dataframe to <code>ggpairs()</code> with <code>aes</code> arguments to colour by <code>gender</code> and make ths plots somewhat transparent (<code>alpha  = 0.3</code>).</p>
+<pre class="r"><code>omega %&gt;% 
+  select(gender, experience, salary) %&gt;% #order variables they will appear in ggpairs()
+  ggpairs(aes(colour=gender, alpha = 0.3))+
+  theme_bw(4)</code></pre>
+<p><img src="/blogs/Code_files/figure-html/ggpairs-1.png" width="648" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Look at the salary vs experience scatterplot. What can you infer from this plot? Explain in a couple of sentences</p>
+<ul>
+<li><p>It becomes clear that men have more experience than women and thus their salaries are a slightly increased compared to that of women. For men and women that have the same experience, salaries are usually the same, with a few exceptions were some men have higher salaries for same experience compared to other men and women.</p></li>
+<li><p>Intuitively, there are more out-liners in male group (both below and above the shaded area). It suggests that maybe there are some other factors (e.g. gender) when determining the salary</p></li>
+<li><p>However, if we need further conclusion, we still need a DID (difference in difference) model to determine their true relationship</p></li>
+</ul>
+</blockquote>
 </div>
