@@ -8,5 +8,5 @@ draft: false
 image: pic09.jpg
 keywords: ""
 slug: aboutme
-title: About me
+title: About me 
 ---

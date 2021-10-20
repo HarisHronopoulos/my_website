@@ -38,9 +38,9 @@ params:
     copyright: Haris Hronopoulos
     enable: yes
 #    quicklinks:
- #     - alt: HTML5 UP
-  #      text: 'Design: '
-   #     url: https://www.html5up.net
+#     - alt: HTML5 UP
+#       text: 'Design: '
+#       url: https://www.html5up.net
     social:
        - icon: fa-twitter
          label: Twitter
@@ -60,19 +60,19 @@ params:
   image: ''
   name: Your name
   navigation:
-    button1:
-      - name: Get Started
-        url: blogs
-    button2:
-      - name: Log In
-        url: '#'
-    links:
-      - name: Home
-        url: '#'
-      - name: Blogs
-        url: blogs
-      - name: CV
-        url: blogs/CV
+#    button1:
+#      - name: Get Started
+#        url: blogs
+#    button2:
+#      - name: Log In
+#        url: '#'
+#    links:
+#      - name: Home
+#        url: '#'
+#      - name: Blogs
+#        url: blogs
+#      - name: CV
+#        url: blogs/CV
 #      - name: Elements
 #       url: elements.html
     menu: Menu
