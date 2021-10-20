@@ -11,5 +11,5 @@ draft: false
 image: 0001.jpg
 keywords: ""
 slug: CV
-title: My CV
+title: Curriculum vitae
 ---

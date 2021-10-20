@@ -93,9 +93,9 @@ params:
         subtitle: Data science projects
         title: Code
         url: blogs/code1
-      - image: pic6.jpg
+      - image: pic06.jpg
         subtitle: My work experience & education
-        title: CV
+        title: My CV
         url: blogs/CV
 #      - image: pic05.jpg
 #        subtitle: Ipsum Dolor Sit Amet
