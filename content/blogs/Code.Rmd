@@ -63,11 +63,8 @@ glimpse(omega) # examine the data frame
 
 The data frame `omega` contains the salaries for the sample of 50 executives in the company. Can you conclude that there is a significant difference between the salaries of the male and female executives?
 
-Note that you can perform different types of analyses, and check whether they all lead to the same conclusion
 
-. Confidence intervals . Hypothesis testing . Correlation analysis . Regression
-
-Calculate summary statistics on salary by gender. Also, create and print a dataframe where, for each gender, you show the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval
+We calculate summary statistics on salary by gender. We also, create and print a dataframe where, for each gender, we show the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval
 
 ```{r, confint_single_valiables}
 # Summary Statistics of salary by gender
@@ -95,8 +92,7 @@ omega_v1
 
 ```
 
-> What can you conclude from your analysis? A couple of sentences would be enough
->
+
 > Even though the sample of people taken into consideration is similar (26 females and 24 males), its clear that there is a significant difference in the respective salaries of the two groups.
 
 Below we run a hypothesis testing, assuming as a null hypothesis that the mean difference in salaries is zero, or that, on average, men and women make the same amount of money.
@@ -118,8 +114,6 @@ gender_salaries %>% visualize()
 
 ```
 
-> What can you conclude from your analysis? A couple of sentences would be enough
->
 > -   Looking at the Null distribution we understand that the difference in sample mean which is around 9000 is not even showing in the chart since its actually located far on the right of distribution. Thus we reject the Null hypothesis and conclude that there is not enough evidence to show us that mean salary between male and female are equal.
 
 ## Relationship Experience - Gender?
@@ -148,15 +142,13 @@ t.test(experience ~ gender, data = omega)
 
 ```
 
-Based on this evidence, can you conclude that there is a significant difference between the experience of the male and female executives? Perform similar analyses as in the previous section. Does your conclusion validate or endanger your conclusion about the difference in male and female salaries?
-
 > t critical value is larger than the p value, thus we conclude that there is a significant difference between the experience of the male and female executives which validates our conclusion about difference in male and female salaries.
 
 ## Relationship Salary - Experience ?
 
 Someone at the meeting argues that clearly, a more thorough analysis of the relationship between salary and experience is required before any conclusion can be drawn about whether there is any gender-based salary discrimination in the company.
 
-Analyse the relationship between salary and experience. Draw a scatterplot to visually inspect the data
+We analyse the relationship between salary and experience. Draw a scatterplot to visually inspect the data
 
 ```{r, salary_exp_scatter}
 ggplot(data = omega, mapping =aes(experience, salary)) +
@@ -170,7 +162,7 @@ ggplot(data = omega, mapping =aes(experience, salary)) +
 
 ## Check correlations between the data
 
-You can use `GGally:ggpairs()` to create a scatterplot and correlation matrix. Essentially, we change the order our variables will appear in and have the dependent variable (Y), salary, as last in our list. We then pipe the dataframe to `ggpairs()` with `aes` arguments to colour by `gender` and make ths plots somewhat transparent (`alpha  = 0.3`).
+We can use `GGally:ggpairs()` to create a scatterplot and correlation matrix. Essentially, we change the order our variables will appear in and have the dependent variable (Y), salary, as last in our list. We then pipe the dataframe to `ggpairs()` with `aes` arguments to colour by `gender` and make ths plots somewhat transparent (`alpha  = 0.3`).
 
 ```{r, ggpairs}
 omega %>% 
@@ -179,8 +171,6 @@ omega %>%
   theme_bw(4)
 ```
 
-> Look at the salary vs experience scatterplot. What can you infer from this plot? Explain in a couple of sentences
->
 > -   It becomes clear that men have more experience than women and thus their salaries are a slightly increased compared to that of women. For men and women that have the same experience, salaries are usually the same, with a few exceptions were some men have higher salaries for same experience compared to other men and women.
 >
 > -   Intuitively, there are more out-liners in male group (both below and above the shaded area). It suggests that maybe there are some other factors (e.g. gender) when determining the salary
