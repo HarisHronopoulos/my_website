@@ -66,15 +66,15 @@ params:
 #    button2:
 #      - name: Log In
 #        url: '#'
-#    links:
-#      - name: Home
-#        url: '#'
-#      - name: Blogs
-#        url: blogs
+    links:
+      - name: Home
+        url: '#'
+      - name: Blogs
+        url: blogs
 #      - name: CV
 #        url: blogs/CV
-#      - name: Elements
-#       url: elements.html
+#      - name: 
+#       url: elements.htm
     menu: Menu
     subtitle: By HTML5 Up
     title: Forty
