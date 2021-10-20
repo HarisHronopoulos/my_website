@@ -1,6 +1,6 @@
 baseURL: https://harishronopoulos.netlify.app/
 languageCode: en-us
-title: Forty
+title: Haris Hronopoulos
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
@@ -8,16 +8,16 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      AND RELEASED UNDER THE CREATIVE COMMONS.
+      I see someone is interested in me! Press "get started"" to get 
+      to know more about me.
     title: Hi, my name is Haris
   blog: {}
   contact:
     address:
-      - city: City, ST 00000
-        country: Country
-        street: Street
-        title: Address
+      - city: Athens,
+        country: Greece
+        street: Leoforos Alexandras
+        title: 13
     buttonClear: Clear
     buttonSend: Send message
     email:
@@ -25,7 +25,7 @@ params:
         title: Email
     enable: yes
     phone:
-      - phone: (000) 000-0000 x1234
+      - phone: (133) 131-13131313
         title: Phone
   custom_css: []
   custom_js: []
@@ -35,12 +35,12 @@ params:
     text: Please visit [this page](/)
   favicon: favicon.ico
   footer:
-    copyright: Haris
+    copyright: Haris Hronopoulos
     enable: yes
-    quicklinks:
-      - alt: HTML5 UP
-        text: 'Design: '
-        url: https://www.html5up.net
+#    quicklinks:
+ #     - alt: HTML5 UP
+  #      text: 'Design: '
+   #     url: https://www.html5up.net
     social:
 #      - icon: fa-twitter
 #        label: Twitter
@@ -53,10 +53,10 @@ params:
 #        url: https://www.instagram.com
       - icon: fa-github
         label: GitHub
-        url: https://www.github.com
+        url: https://github.com/HarisHronopoulos
       - icon: fa-linkedin
         label: LinkedIn
-        url: https://www.linkedin.com
+        url: https://www.linkedin.com/in/haris-hronopoulos/
   image: ''
   name: Your name
   navigation:
@@ -67,14 +67,14 @@ params:
       - name: Log In
         url: '#'
     links:
-      - name: Home
+      - name: CV
         url: '#'
-      - name: Blogs
+      - name: Data science
         url: blogs
-      - name: Generic Blog
-        url: blogs/ipsum
-      - name: Elements
-        url: elements.html
+#      - name: Generic Blog
+#       url: blogs/ipsum
+#      - name: Elements
+#       url: elements.html
     menu: Menu
     subtitle: By HTML5 Up
     title: Forty
