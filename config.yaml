@@ -86,9 +86,9 @@ params:
         title: My passions
         url: blogs/Mypassions
       - image: pic09.jpg
-        subtitle: Work experience & education
-        title: Curriculum vitae
-        url: blogs/CV
+#        subtitle: About me
+        title: About me
+        url: blogs/aboutme
       - image: pic10.jpg
         subtitle: Data science projects
         title: Code
