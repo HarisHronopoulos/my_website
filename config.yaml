@@ -8,9 +8,8 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      I see someone is interested in me! Press "get started"" to get 
-      to know more about me.
-    title: Hi, my name is Haris
+      Press "get started"" to get to know more about me.
+    title: I see someone is interested in me!
   blog: {}
   contact:
     address:
