@@ -88,7 +88,7 @@ params:
 #        subtitle: About me
         title: About me
         url: blogs/aboutme 
-      - image: pic12.jpg
+      - image: pic12.jpeg
         subtitle: Data science projects
         title: Code
         url: blogs/code1
