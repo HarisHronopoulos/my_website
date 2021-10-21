@@ -24,7 +24,7 @@ params:
         title: Email
     enable: yes
     phone:
-      - phone: (133) 131-13131313
+      - phone: (0030) 2108709000
         title: Phone
   custom_css: []
   custom_js: []
@@ -59,17 +59,17 @@ params:
   image: ''
   name: Your name
   navigation:
-#    button1:
-#      - name: Get Started
-#        url: blogs
+    button1:
+      - name: Get Started
+        url: blogs
 #    button2:
 #      - name: Log In
 #        url: '#'
-    links:
-      - name: Home
-        url: '#'
-      - name: Blogs
-        url: blogs
+#    links:
+#      - name: Home
+#        url: '#'
+#      - name: Blogs
+#        url: blogs
 #      - name: CV
 #        url: blogs/CV
 #      - name: 
